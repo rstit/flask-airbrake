@@ -6,6 +6,7 @@ author: Piotr Poteralski
 
 Overview
 --------
+[![Build Status](https://travis-ci.org/rstit/flask-airbrake.svg?branch=master)](https://travis-ci.org/rstit/flask-airbrake)
 
 Flask extension for Airbrake
 
