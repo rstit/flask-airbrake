@@ -15,24 +15,25 @@ Installation
 --------------------
 
 To install use pip:
-
+```bash
     $ pip install Flask-Airbrake
-
+```
 
 Or clone the repo:
-
+```bash
     $ git clone https://github.com/rstit/flask-airbrake.git
     $ python setup.py install
-    
+``` 
 Usage
 -----
 The first thing you’ll need to do is setup config:
-
+```python
     AIRBRAKE_API_KEY = os_env.get('AIRBRAKE_API_KEY')
     AIRBRAKE_PROJECT_ID = os_env.get('AIRBRAKE_PROJECT_ID')
+```
 
 Then initialize Airbrake under your application:
-
+```python
     from flask_airbrake import Airbrake
     airbrake = Airbrake()
     
@@ -40,9 +41,9 @@ Then initialize Airbrake under your application:
         app = Flask(__name__)
         airbrake.init_app(app)
         return app
-
+```
 You can implement usergetter for sending custom user info from you auth implementation:
-
+```python
     @airbrake.usergetter
     def get_user_dict(*args, **kwargs):
         try:
@@ -55,7 +56,7 @@ You can implement usergetter for sending custom user info from you auth implemen
             }
         except Exception:
             return {"error": "Can not get user info"}
-    
+```
 Contributing
 ------------
 
