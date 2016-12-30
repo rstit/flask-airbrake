@@ -1,0 +1,3 @@
+# Flask Extension
+Flask==0.12
+airbrake===1.3.3
