@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import logging
 
 from airbrake import AirbrakeHandler, Airbrake as Client
