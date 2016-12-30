@@ -1,12 +1,13 @@
 Flask-Airbrake
 ===============================
+[![Build Status](https://travis-ci.org/rstit/flask-airbrake.svg?branch=master)](https://travis-ci.org/rstit/flask-airbrake)
 
 version number: 0.0.1
-author: Piotr Poteralski
+
+contributor: Piotr Poteralski
 
 Overview
 --------
-[![Build Status](https://travis-ci.org/rstit/flask-airbrake.svg?branch=master)](https://travis-ci.org/rstit/flask-airbrake)
 
 Flask extension for Airbrake
 
