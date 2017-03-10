@@ -2,7 +2,7 @@ Flask-Airbrake
 ===============================
 [![Build Status](https://travis-ci.org/rstit/flask-airbrake.svg?branch=master)](https://travis-ci.org/rstit/flask-airbrake)
 
-version number: 0.0.2
+version number: 0.0.3
 
 contributor: Piotr Poteralski
 
