@@ -6,6 +6,13 @@ from airbrake import AirbrakeHandler, Airbrake as Client
 __version__ = "0.0.1"
 
 from flask.signals import got_request_exception
+# Find the stack on which we want to store s3 client.
+# Starting with Flask 0.9, the _app_ctx_stack is the correct one,
+# before that we need to use the _request_ctx_stack.
+try:
+    from flask import _app_ctx_stack as stack
+except ImportError:
+    from flask import _request_ctx_stack as stack
 
 
 def make_client(client_cls, app, environment=None, base_url=None):
@@ -43,8 +50,8 @@ class Airbrake(object):
         self.logging = logging
         self.logging_exclusions = logging_exclusions
         self.client_cls = Client
-        self.client = None
         self.level = level
+        self.app = None
         self.wrap_wsgi = wrap_wsgi
         self.register_signal = register_signal
         self._usergetter = None
@@ -55,6 +62,8 @@ class Airbrake(object):
     def init_app(self, app, logging=None, level=None,
                  logging_exclusions=None, wrap_wsgi=None,
                  register_signal=None):
+        self.app = app
+
         if level is not None:
             self.level = level
 
@@ -75,9 +84,6 @@ class Airbrake(object):
         if logging_exclusions is not None:
             self.logging_exclusions = logging_exclusions
 
-        if not self.client:
-            self.client = make_client(self.client_cls, app)
-
         if self.logging:
             kwargs = {}
             if self.logging_exclusions is not None:
@@ -96,8 +102,6 @@ class Airbrake(object):
         app.extensions['airbrake'] = self
 
     def handle_exception(self, *args, **kwargs):
-        if not self.client:
-            return
         extra = {}
         if self._usergetter:
             extra['user'] = self._usergetter()
@@ -127,3 +131,14 @@ class Airbrake(object):
         """
         self._usergetter = f
         return f
+
+    @property
+    def client(self):
+        ctx = stack.top
+        if ctx is not None:
+            if not hasattr(ctx, 'airbrake'):
+                ctx.airbrake = make_client(self.client_cls, self.app)
+            return ctx.airbrake
+        else:
+            # If you want to use s3 client outside flask application
+            return make_client(self.client_cls, self.app)
